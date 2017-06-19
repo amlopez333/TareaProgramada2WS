@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Descripción WSDL de la clase Hola Mundo. -->
+
+<definitions name="B43885_Hangman"
+             targetNamespace="urn:B43885_Hangman"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="urn:B43885_Hangman"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+  <!-- Tipos complejos -->
+
+  <types xmlns="http://schemas.xmlsoap.org/wsdl/">
+    <xsd:schema targetNamespace="urn:B43885_Hangman">
+      <xsd:element name="getWord">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="difficulty" type="xsd:string" nillable="true" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getWordReturn">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="getWordResult" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="checkGuess">
+        <xsd:complexType>
+			<xsd:sequence>
+            <xsd:element name="letter" type="xsd:string" nillable="false" />
+          </xsd:sequence>
+		</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="checkGuessReturn">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="checkGuessResult" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getWrongCount">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="getWrongCountReturn">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="getWrongCountResult" type="xsd:integer" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+	  <xsd:element name="getRightCount">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="getRightCountReturn">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="getRightCountResult" type="xsd:integer" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+	  <xsd:element name="checkWon">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="checkWonReturn">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="checkWonResult" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+	  <xsd:element name="checkLost">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="checkLostReturn">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="checkLostResult" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </types>
+
+  <!-- Mensajes para comunicarse con la clase HolaMundo. -->
+
+  <message name="getWordRequest">
+    <part name="parameters" element="tns:getWord" />
+  </message>
+
+  <message name="getWordResponse">
+    <part name="parameters" element="tns:getWordReturn" />
+  </message>
+
+  <message name="checkGuessRequest">
+    <part name="parameters" element="tns:checkGuess" />
+  </message>
+
+  <message name="checkGuessResponse">
+    <part name="parameters" element="tns:checkGuessReturn" />
+  </message>
+
+  <message name="getWrongCountRequest">
+    <part name="parameters" element="tns:getWrongCount" />
+  </message>
+
+  <message name="getWrongCountResponse">
+    <part name="parameters" element="tns:getWrongCountReturn" />
+  </message>
+  
+  <message name="getRightCountRequest">
+    <part name="parameters" element="tns:getRightCount" />
+  </message>
+
+  <message name="getRightCountResponse">
+    <part name="parameters" element="tns:getRightCountReturn" />
+  </message>
+  
+  <message name="checkWonRequest">
+    <part name="parameters" element="tns:checkWon" />
+  </message>
+
+  <message name="checkWonResponse">
+    <part name="parameters" element="tns:checkWonReturn" />
+  </message>
+  
+  <message name="checkLostRequest">
+    <part name="parameters" element="tns:checkLost" />
+  </message>
+
+  <message name="checkLostResponse">
+    <part name="parameters" element="tns:checkLostReturn" />
+  </message>
+ 
+
+  <!-- Puerto para comunicar con la clase HolaMundo, "ECCI_HolaMundo" -->
+
+  <portType name="B43885_HangmanPort">
+
+    <operation name="getWord">
+      <input message="tns:getWordRequest" />
+      <output message="tns:getWordResponse" />
+    </operation>
+
+    <operation name="checkGuess">
+      <input message="tns:checkGuessRequest" />
+      <output message="tns:checkGuessResponse" />
+    </operation>
+
+    <operation name="getWrongCount">
+      <input message="tns:getWrongCountRequest" />
+      <output message="tns:getWrongCountResponse" />
+    </operation>
+	
+	<operation name="getRightCount">
+      <input message="tns:getRightCountRequest" />
+      <output message="tns:getRightCountResponse" />
+    </operation>
+	
+	<operation name="checkWon">
+      <input message="tns:checkWonRequest" />
+      <output message="tns:checkWonResponse" />
+    </operation>
+	
+	<operation name="checkLost">
+      <input message="tns:checkLostRequest" />
+      <output message="tns:checkLostResponse" />
+    </operation>
+
+  </portType>
+
+  <!-- Vinculación de los llamados con el transporte - Document, SOAP/Literal over HTTP -->
+
+  <binding name="B43885_HangmanBinding" type="tns:B43885_HangmanPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+    <operation name="getWord">
+      <soap:operation soapAction="urn:B43885_Hangman#Hangman#getWord" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+
+    <operation name="checkGuess">
+      <soap:operation soapAction="urn:B43885_Hangman#Hangman#checkGuess" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+
+    <operation name="getWrongCount">
+      <soap:operation soapAction="urn:B43885_Hangman#Hangman#getWrongCount" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+	
+	<operation name="getRightCount">
+      <soap:operation soapAction="urn:B43885_Hangman#Hangman#getRightCount" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+	
+	<operation name="checkWon">
+      <soap:operation soapAction="urn:B43885_Hangman#Hangman#checkWon" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+	
+	<operation name="checkLost">
+      <soap:operation soapAction="urn:B43885_Hangman#Hangman#checkLost" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+
+  <!-- Punto de comunicación con la clase HolaMundo -->
+
+  <service name="B43885_Hangman">
+    <documentation />
+    <port name="B43885_HangmanPort" binding="tns:B43885_HangmanBinding">
+      <soap:address location="http://titanic.ecci.ucr.ac.cr:80/~b43885/HangmanServiceDocumentLiteral/" />
+    </port>
+  </service>
+
+</definitions>
