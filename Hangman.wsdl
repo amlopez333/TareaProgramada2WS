@@ -244,7 +244,7 @@
   <service name="B43885_Hangman">
     <documentation />
     <port name="B43885_HangmanPort" binding="tns:B43885_HangmanBinding">
-      <soap:address location="http://titanic.ecci.ucr.ac.cr:80/~b43885/HangmanServiceDocumentLiteral/" />
+      <soap:address location="http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanDocumentLiteral/" />
     </port>
   </service>
 

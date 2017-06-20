@@ -1,5 +1,5 @@
 <?php
-  
+header('Access-Control-Allow-Origin: *');
 /**
  * 
  * Copyright (c) 2005-2015, Braulio José Solano Rojas
@@ -50,7 +50,7 @@ class Hangman {
 	private $word = 'atun';
 	private $wrongCount = 0;
 	private $rightCount = 4;
-	private difficulty = '';
+	private $difficulty = '';
 	
 	/**
 	 * HolaMundo::__construct() Constructor de la clase HolaMundo.
@@ -96,6 +96,17 @@ class Hangman {
 		return $this->wrongCount;
 	}
 	
+	public function getRightCount() {
+		return $this->rightCount;
+	}
+	
+	public function checkWon(){
+		return $this->rightCount === 0;
+	}
+	
+	public function checkLost(){
+		return $this->wrongCount === 6;
+	}
 	
 }
 
