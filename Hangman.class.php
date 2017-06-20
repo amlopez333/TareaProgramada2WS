@@ -47,10 +47,10 @@ header('Access-Control-Allow-Origin: *');
  * @access public
  **/
 class Hangman {
-	private $word = 'atun';
+	private $word = 'true';
 	private $wrongCount = 0;
 	private $rightCount = 4;
-	private $difficulty = '';
+	private $difficulty = 'easy';
 	
 	/**
 	 * HolaMundo::__construct() Constructor de la clase HolaMundo.
@@ -58,8 +58,7 @@ class Hangman {
 	 * @param string $nombre
 	 * @return string
 	 **/
-	public function __construct($difficulty = 'easy') {
-		$this->difficulty = $difficulty;
+	public function __construct() {
 	}
 	
 	/**
@@ -68,23 +67,26 @@ class Hangman {
 	 * @param string $nombre
 	 * @return string
 	 **/
-	public function getWord($difficulty = '') {
-		$difficulty = $difficulty?$difficulty:$this->difficulty;
+	public function getWord() {
 		return $this->word;
 	}
 	
 	/**
 	 * HolaMundo::servidorEstampillaDeTiempo() Devuelve el tiempo del servidor.
-	 * 
-	 * @return string 
+	 * @param string $letter
+	 * @return boolean
 	 **/
 	public function checkGuess($letter) {
-		if(substr_count($letter) > 0){
-			$this->rightCount -= substr_count($letter);
+		if(substr_count($this->word, $letter) > 0){
+			$this->rightCount -= substr_count($this->word, $letter);
+			//echo $letter;
 			return true;
 		}
-		$this->wrongCount--;
-		return false;
+		else{
+			$this->wrongCount++;
+			return false;
+		}
+		
 	}
 	
 	/**

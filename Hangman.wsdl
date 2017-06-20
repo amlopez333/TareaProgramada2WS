@@ -16,11 +16,7 @@
   <types xmlns="http://schemas.xmlsoap.org/wsdl/">
     <xsd:schema targetNamespace="urn:B43885_Hangman">
       <xsd:element name="getWord">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="difficulty" type="xsd:string" nillable="true" />
-          </xsd:sequence>
-        </xsd:complexType>
+        <xsd:complexType />
       </xsd:element>
       <xsd:element name="getWordReturn">
         <xsd:complexType>
@@ -31,10 +27,10 @@
       </xsd:element>
       <xsd:element name="checkGuess">
         <xsd:complexType>
-			<xsd:sequence>
-            <xsd:element name="letter" type="xsd:string" nillable="false" />
+          <xsd:sequence>
+            <xsd:element name="letter" type="xsd:string" />
           </xsd:sequence>
-		</xsd:complexType>
+        </xsd:complexType>
       </xsd:element>
       <xsd:element name="checkGuessReturn">
         <xsd:complexType>
@@ -244,7 +240,7 @@
   <service name="B43885_Hangman">
     <documentation />
     <port name="B43885_HangmanPort" binding="tns:B43885_HangmanBinding">
-      <soap:address location="http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanDocumentLiteral/" />
+      <soap:address location="http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanServiceDocumentLiteral/" />
     </port>
   </service>
 

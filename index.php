@@ -53,9 +53,9 @@ else {
 	session_start();
 
 	if (!isset($_SESSION['service'])) {
-		$_SESSION['service'] = new Hangman('easy');
+		$_SESSION['service'] = new Hangman();
 	}
-	$servidorSoap = new SoapServer('http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanDocumentLiteral/?wsdl');
+	$servidorSoap = new SoapServer('http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanServiceDocumentLiteral/?wsdl');
 
 	//Para evitar la excepción por defecto de SOAP PHP cuando no existe HTTP_RAW_POST_DATA,
 	//se regresa explícitamente el siguiente fallo cuando no hay solicitud (v.b. desde un navegador)
