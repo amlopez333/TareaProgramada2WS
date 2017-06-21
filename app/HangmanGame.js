@@ -23,7 +23,8 @@ const HangmanGame = React.createClass({
     },
     hasLost: function(){
         let strikes = this.state.strikes;
-        if(strikes >= 6){
+        const won = this.state.won
+        if(strikes >= 6 && !won){
             strikes = 6;
             return true
         }
@@ -35,6 +36,7 @@ const HangmanGame = React.createClass({
         let over = this.state.over;
         let won = this.state.won;
         guesses.push(letter);
+        won = this.hasWon();
         if(!word.includes(letter)){
             strikes++;
             over = this.hasLost();
@@ -65,7 +67,7 @@ const HangmanGame = React.createClass({
     render: function(){
         return (
             <div>
-                <h1>{this.getTitle}</h1>
+                <h1>{this.getTitle()}</h1>
                 
                 <HangmanDrawing
                 won = {this.state.won}

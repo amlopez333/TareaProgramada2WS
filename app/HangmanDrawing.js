@@ -6,7 +6,9 @@ const levelMap = [
     {'strike-2': 2},
     {'strike-3': 3},
     {'strike-4': 4},
-    {'strike-5': 5}
+    {'strike-5': 5},
+    {'gameover': 6},
+    {'gamewon': -1}
 ]
 const HangmanDrawing = React.createClass({
     level: function(){

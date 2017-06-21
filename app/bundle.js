@@ -11,7 +11,7 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var levelMap = [{ 'strike-0': 0 }, { 'strike-1': 1 }, { 'strike-2': 2 }, { 'strike-3': 3 }, { 'strike-4': 4 }, { 'strike-5': 5 }];
+var levelMap = [{ 'strike-0': 0 }, { 'strike-1': 1 }, { 'strike-2': 2 }, { 'strike-3': 3 }, { 'strike-4': 4 }, { 'strike-5': 5 }, { 'gameover': 6 }, { 'gamewon': -1 }];
 var HangmanDrawing = _react2.default.createClass({
     displayName: 'HangmanDrawing',
 
@@ -92,7 +92,8 @@ var HangmanGame = _react2.default.createClass({
     },
     hasLost: function hasLost() {
         var strikes = this.state.strikes;
-        if (strikes >= 6) {
+        var won = this.state.won;
+        if (strikes >= 6 && !won) {
             strikes = 6;
             return true;
         }
@@ -104,6 +105,7 @@ var HangmanGame = _react2.default.createClass({
         var over = this.state.over;
         var won = this.state.won;
         guesses.push(letter);
+        won = this.hasWon();
         if (!word.includes(letter)) {
             strikes++;
             over = this.hasLost();
@@ -137,7 +139,7 @@ var HangmanGame = _react2.default.createClass({
             _react2.default.createElement(
                 'h1',
                 null,
-                this.getTitle
+                this.getTitle()
             ),
             _react2.default.createElement(_HangmanDrawing2.default, {
                 won: this.state.won,
