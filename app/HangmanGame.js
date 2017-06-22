@@ -70,9 +70,9 @@ const HangmanGame = React.createClass({
             return 'YOU WON!';
         } 
         if (this.state.lost) {
-            return 'Looser...';
+            return 'Loser...';
         }
-        return 'Hangman-ReactJS';
+        return 'Hangman';
     },
     getClass: function(){
         if(!this.state.lost && !this.state.won){

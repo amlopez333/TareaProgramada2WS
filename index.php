@@ -44,7 +44,8 @@ function autoinclude($className) {
 }
 
 spl_autoload_register('autoinclude');
-
+ini_set('soap.wsdl_cache_enabled', '0');
+ini_set('soap.wsdl_cache_ttl', '0');
 if (isset($_GET['wsdl'])) {
 	header('Content-Type: application/soap+xml; charset=utf-8');
 	echo file_get_contents('Hangman.wsdl');

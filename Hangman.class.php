@@ -61,7 +61,6 @@ class Hangman {
 	 **/
 	public function __construct() {
 		
-		$this->reset();
 	}
 	
 	/**
@@ -72,20 +71,22 @@ class Hangman {
 	 **/
 	public function getWord() {
 		
+		$this->words[0] = 'retard';
+		$wordFile = fopen("words.txt", "r") or die('Error opening file!');
 		
+		while(!feof($wordFile)){
+			$word = (string)fgets($wordFile);
+			$word = rtrim($word);
+			$word = strtolower($word);
+			$this->words[] = $word;
+		}
+		fclose($wordFile);	
+		
+		$this->reset();
 		$this->reset();
 		return $this->word;
 	}
 	private function reset(){
-		$wordFile = fopen('words.txt', 'r') or die('Error opening file!');
-
-		while(!feof($wordFile)){
-			$word = (string)fgets($wordFile);
-			//$word = str_replace("\r", '', $word);
-			$word = strtolower($word);
-			array_push($this->words, $word);
-		}
-		fclose($wordFile);	
 		$this->word = $this->words[array_rand($this->words,1)];
 		//$this->word = str_replace(" ", '', $this->word);
 		$this->wrongCount = 0;
