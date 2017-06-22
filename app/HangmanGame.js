@@ -51,9 +51,7 @@ const HangmanGame = React.createClass({
         }.bind(this));
     },
     checkLetter: function(letter){
-        
         let renderLetter = this.state.renderLetter
-
         var pl = new SOAPClientParameters();
         pl.add('letter', letter);
         SOAPClient.invoke(this.url, 'checkGuess', pl, true, function(result){
@@ -69,12 +67,12 @@ const HangmanGame = React.createClass({
     },
     getTitle: function(){
         if (this.state.won) {
-            return 'GANASTES!';
+            return 'YOU WON!';
         } 
         if (this.state.lost) {
-            return 'CROMASTES!';
+            return 'Looser...';
         }
-        return 'Ahorcado';
+        return 'Hangman-ReactJS';
     },
     getClass: function(){
         if(!this.state.lost && !this.state.won){
@@ -108,7 +106,7 @@ const HangmanGame = React.createClass({
                 className = {this.getClass()}
                 disabled = {!this.state.lost && !this.state.won}
                 onClick = {this.newGame}>
-                Juego Nuevo
+                New Game
                 </button>
             </div>
         )

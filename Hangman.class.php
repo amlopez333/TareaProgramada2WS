@@ -47,10 +47,11 @@ header('Access-Control-Allow-Origin: *');
  * @access public
  **/
 class Hangman {
-	private $word = 'queue';
+	private $word = '';
 	private $wrongCount = 0;
 	private $rightCount = 0;
-	private $difficulty = 'easy';
+	private $words = array();
+	//private $difficulty = 'easy';
 	
 	/**
 	 * HolaMundo::__construct() Constructor de la clase HolaMundo.
@@ -59,20 +60,34 @@ class Hangman {
 	 * @return string
 	 **/
 	public function __construct() {
+		
 		$this->reset();
 	}
 	
 	/**
 	 * HolaMundo::salude() Saluda al Mundo o a $this->nombre o saluda a $nombre si $nombre no es vacío.
-	 * 
+	 * $this->words[array_rand($this->words, 1)] or
 	 * @param string $nombre
 	 * @return string
 	 **/
 	public function getWord() {
+		
+		
 		$this->reset();
 		return $this->word;
 	}
 	private function reset(){
+		$wordFile = fopen('words.txt', 'r') or die('Error opening file!');
+
+		while(!feof($wordFile)){
+			$word = (string)fgets($wordFile);
+			//$word = str_replace("\r", '', $word);
+			$word = strtolower($word);
+			array_push($this->words, $word);
+		}
+		fclose($wordFile);	
+		$this->word = $this->words[array_rand($this->words,1)];
+		//$this->word = str_replace(" ", '', $this->word);
 		$this->wrongCount = 0;
 		$this->rightCount = strlen($this->word);
 	}

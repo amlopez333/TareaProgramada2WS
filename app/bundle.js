@@ -117,9 +117,7 @@ var HangmanGame = _react2.default.createClass({
         }.bind(this));
     },
     checkLetter: function checkLetter(letter) {
-
         var renderLetter = this.state.renderLetter;
-
         var pl = new SOAPClientParameters();
         pl.add('letter', letter);
         SOAPClient.invoke(this.url, 'checkGuess', pl, true, function (result) {
@@ -135,12 +133,12 @@ var HangmanGame = _react2.default.createClass({
     },
     getTitle: function getTitle() {
         if (this.state.won) {
-            return 'GANASTES!';
+            return 'YOU WON!';
         }
         if (this.state.lost) {
-            return 'CROMASTES!';
+            return 'Looser...';
         }
-        return 'Ahorcado';
+        return 'Hangman-ReactJS';
     },
     getClass: function getClass() {
         if (!this.state.lost && !this.state.won) {
@@ -177,7 +175,7 @@ var HangmanGame = _react2.default.createClass({
                     className: this.getClass(),
                     disabled: !this.state.lost && !this.state.won,
                     onClick: this.newGame },
-                'Juego Nuevo'
+                'New Game'
             )
         );
     }
@@ -317,6 +315,7 @@ var LetterSlot = _react2.default.createClass({
 		var reveal = this.props.reveal;
 		var contents = ' ';
 		var classNames = ['letter-slot'];
+		console.log(letter);
 		if (this.props.renderLetter[letter]) {
 			contents = letter;
 		}

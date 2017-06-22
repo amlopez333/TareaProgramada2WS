@@ -6,6 +6,7 @@ const LetterSlot = React.createClass({
 		const reveal = this.props.reveal;
 		let contents = ' ';
 		let classNames = ['letter-slot']
+		console.log(letter);
 		if(this.props.renderLetter[letter]){
 			contents = letter;
 		}
