@@ -4,62 +4,83 @@ import Keyboard from './Keyboard';
 import LetterContainer from './LetterContainer';
 
 const HangmanGame = React.createClass({
+    url: 'http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanServiceDocumentLiteral/',
     newGame: function(){
-        const word = 'atun';
+        const pl = new SOAPClientParameters();
+        //const url = 'http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanServiceDocumentLiteral/';
+        SOAPClient.invoke(this.url, 'getWord', pl, true, function(result){
+            console.log('Palabra: ' + result);
+            const word = result;
+            this.setState({word})
+        }.bind(this));
+        const word = '';
         const strikes = 0;
-        const guesses = [];
-        const over = false;
+        const lost = false;
         const won = false;
-        this.setState({word, strikes, guesses, over, won})
+        const renderLetter = {};
+        this.setState({word, strikes, lost, won, renderLetter})
     },
     hasWon: function(){
-        const guesses = this.state.guesses;
-        const word = this.state.word.split('');
-        let won = true;
-        word.forEach(function(letter) {
-            won = guesses.includes(letter) && won
+        var pl = new SOAPClientParameters();
+        SOAPClient.invoke(this.url, 'checkWon', pl, true, function(result){
+
+            const won = result === 'true';
+            console.log(result);
+            if(won){
+                return this.setState({won});
+            }
+
         }.bind(this));
-        return won;
     },
-    hasLost: function(){
-        let strikes = this.state.strikes;
-        const won = this.state.won
-        if(strikes >= 6 && !won){
-            strikes = 6;
-            return true
-        }
+    hasLost: function(strikes){
+        var pl = new SOAPClientParameters();
+        SOAPClient.invoke(this.url, 'checkLost', pl, true, function(result){
+
+            const lost = result === 'true';
+            if(lost){
+                return this.setState({lost});
+            }
+
+        }.bind(this));
+    },
+    setStrikes: function(){
+        var pl = new SOAPClientParameters();
+        SOAPClient.invoke(this.url, 'getWrongCount', pl, true, function(result){
+            const strikes = parseInt(result);
+            return this.setState({strikes})
+        }.bind(this));
     },
     checkLetter: function(letter){
-        const word = this.state.word;
-        let strikes = this.state.strikes;
-        const guesses = this.state.guesses;
-        let over = this.state.over;
-        let won = this.state.won;
-        guesses.push(letter);
-        won = this.hasWon();
-        if(!word.includes(letter)){
-            strikes++;
-            over = this.hasLost();
-        }
-        else{
-            won = this.hasWon();
-        }
-        this.setState({strikes, guesses, over, won});
+        
+        let renderLetter = this.state.renderLetter
+
+        var pl = new SOAPClientParameters();
+        pl.add('letter', letter);
+        SOAPClient.invoke(this.url, 'checkGuess', pl, true, function(result){
+            const guess = result === 'true';
+            if(guess){
+                renderLetter[letter] = true;
+                this.hasWon();
+                return this.setState({renderLetter});
+            }
+            this.setStrikes()
+            return this.hasLost();
+	    }.bind(this));
     },
     getTitle: function(){
         if (this.state.won) {
-            return 'YOU WON!';
+            return 'GANASTES!';
         } 
-        if (this.state.over) {
-            return 'Game Over';
+        if (this.state.lost) {
+            return 'CROMASTES!';
         }
-        return 'Hang Man';
+        return 'Ahorcado';
     },
     getClass: function(){
-        if(!this.state.over && !this.state.won){
+        if(!this.state.lost && !this.state.won){
             return 'new-game';
         }
-        return 'new-game shown';
+        return 'new-game show';
     },
     componentWillMount: function(){
         this.newGame();
@@ -75,19 +96,19 @@ const HangmanGame = React.createClass({
             
                 <LetterContainer
                 word = {this.state.word}
-                reveal = {this.state.over}
-                guesses = {this.state.guesses}/>
+                reveal = {this.state.lost}
+                renderLetter = {this.state.renderLetter}/>
                 
                 <Keyboard
                 checkLetter = {this.checkLetter}
-                enabled = {!this.state.over && !this.state.won}
+                enabled = {!this.state.lost && !this.state.won}
                 />
                 
                 <button 
                 className = {this.getClass()}
-                disabled = {!this.state.over && !this.state.won}
+                disabled = {!this.state.lost && !this.state.won}
                 onClick = {this.newGame}>
-                New Game
+                Juego Nuevo
                 </button>
             </div>
         )

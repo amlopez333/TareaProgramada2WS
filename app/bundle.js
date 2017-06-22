@@ -36,7 +36,6 @@ var HangmanDrawing = _react2.default.createClass({
                 var label = Object.keys(level)[0];
                 var strike = level[label];
                 var levelClass = this.getClass(label, strike);
-                console.log(levelClass);
                 return _react2.default.createElement('div', { key: key, className: levelClass });
             }.bind(this))
         );
@@ -73,61 +72,81 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var HangmanGame = _react2.default.createClass({
     displayName: 'HangmanGame',
 
+    url: 'http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanServiceDocumentLiteral/',
     newGame: function newGame() {
-        var word = 'atun';
+        var pl = new SOAPClientParameters();
+        //const url = 'http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanServiceDocumentLiteral/';
+        SOAPClient.invoke(this.url, 'getWord', pl, true, function (result) {
+            console.log('Palabra: ' + result);
+            var word = result;
+            this.setState({ word: word });
+        }.bind(this));
+        var word = '';
         var strikes = 0;
-        var guesses = [];
-        var over = false;
+        var lost = false;
         var won = false;
-        this.setState({ word: word, strikes: strikes, guesses: guesses, over: over, won: won });
+        var renderLetter = {};
+        this.setState({ word: word, strikes: strikes, lost: lost, won: won, renderLetter: renderLetter });
     },
     hasWon: function hasWon() {
-        var guesses = this.state.guesses;
-        var word = this.state.word.split('');
-        var won = true;
-        word.forEach(function (letter) {
-            won = guesses.includes(letter) && won;
+        var pl = new SOAPClientParameters();
+        SOAPClient.invoke(this.url, 'checkWon', pl, true, function (result) {
+
+            var won = result === 'true';
+            console.log(result);
+            if (won) {
+                return this.setState({ won: won });
+            }
         }.bind(this));
-        return won;
     },
-    hasLost: function hasLost() {
-        var strikes = this.state.strikes;
-        var won = this.state.won;
-        if (strikes >= 6 && !won) {
-            strikes = 6;
-            return true;
-        }
+    hasLost: function hasLost(strikes) {
+        var pl = new SOAPClientParameters();
+        SOAPClient.invoke(this.url, 'checkLost', pl, true, function (result) {
+
+            var lost = result === 'true';
+            if (lost) {
+                return this.setState({ lost: lost });
+            }
+        }.bind(this));
+    },
+    setStrikes: function setStrikes() {
+        var pl = new SOAPClientParameters();
+        SOAPClient.invoke(this.url, 'getWrongCount', pl, true, function (result) {
+            var strikes = parseInt(result);
+            return this.setState({ strikes: strikes });
+        }.bind(this));
     },
     checkLetter: function checkLetter(letter) {
-        var word = this.state.word;
-        var strikes = this.state.strikes;
-        var guesses = this.state.guesses;
-        var over = this.state.over;
-        var won = this.state.won;
-        guesses.push(letter);
-        won = this.hasWon();
-        if (!word.includes(letter)) {
-            strikes++;
-            over = this.hasLost();
-        } else {
-            won = this.hasWon();
-        }
-        this.setState({ strikes: strikes, guesses: guesses, over: over, won: won });
+
+        var renderLetter = this.state.renderLetter;
+
+        var pl = new SOAPClientParameters();
+        pl.add('letter', letter);
+        SOAPClient.invoke(this.url, 'checkGuess', pl, true, function (result) {
+            var guess = result === 'true';
+            if (guess) {
+                renderLetter[letter] = true;
+                this.hasWon();
+                return this.setState({ renderLetter: renderLetter });
+            }
+            this.setStrikes();
+            return this.hasLost();
+        }.bind(this));
     },
     getTitle: function getTitle() {
         if (this.state.won) {
-            return 'YOU WON!';
+            return 'GANASTES!';
         }
-        if (this.state.over) {
-            return 'Game Over';
+        if (this.state.lost) {
+            return 'CROMASTES!';
         }
-        return 'Hang Man';
+        return 'Ahorcado';
     },
     getClass: function getClass() {
-        if (!this.state.over && !this.state.won) {
+        if (!this.state.lost && !this.state.won) {
             return 'new-game';
         }
-        return 'new-game shown';
+        return 'new-game show';
     },
     componentWillMount: function componentWillMount() {
         this.newGame();
@@ -146,19 +165,19 @@ var HangmanGame = _react2.default.createClass({
                 strikes: this.state.strikes }),
             _react2.default.createElement(_LetterContainer2.default, {
                 word: this.state.word,
-                reveal: this.state.over,
-                guesses: this.state.guesses }),
+                reveal: this.state.lost,
+                renderLetter: this.state.renderLetter }),
             _react2.default.createElement(_Keyboard2.default, {
                 checkLetter: this.checkLetter,
-                enabled: !this.state.over && !this.state.won
+                enabled: !this.state.lost && !this.state.won
             }),
             _react2.default.createElement(
                 'button',
                 {
                     className: this.getClass(),
-                    disabled: !this.state.over && !this.state.won,
+                    disabled: !this.state.lost && !this.state.won,
                     onClick: this.newGame },
-                'New Game'
+                'Juego Nuevo'
             )
         );
     }
@@ -189,7 +208,7 @@ var Key = _react2.default.createClass({
         var letter = this.props.letter;
         return _react2.default.createElement(
             'button',
-            { value: letter, onClick: this.handleClick, disabled: !this.props.enabled },
+            { className: 'key', value: letter, onClick: this.handleClick, disabled: !this.props.enabled },
             letter
         );
     }
@@ -269,7 +288,7 @@ var LetterContainer = _react2.default.createClass({
             'div',
             { className: 'letter-container' },
             letters.map(function (letter, key) {
-                return _react2.default.createElement(_LetterSlot2.default, { key: key, guesses: this.props.guesses, reveal: this.props.reveal });
+                return _react2.default.createElement(_LetterSlot2.default, { key: key, reveal: this.props.reveal, letter: letter, renderLetter: this.props.renderLetter });
             }.bind(this))
         );
     }
@@ -294,16 +313,20 @@ var LetterSlot = _react2.default.createClass({
 	displayName: 'LetterSlot',
 
 	render: function render() {
-		var guesses = this.props.guesses;
 		var letter = this.props.letter;
 		var reveal = this.props.reveal;
 		var contents = ' ';
-		if (guesses.includes(letter)) {
+		var classNames = ['letter-slot'];
+		if (this.props.renderLetter[letter]) {
+			contents = letter;
+		}
+		if (reveal) {
+			classNames = classNames.concat(['reveal']);
 			contents = letter;
 		}
 		return _react2.default.createElement(
 			'div',
-			{ className: 'letter-slot' },
+			{ className: classNames.join(' ') },
 			contents
 		);
 	}

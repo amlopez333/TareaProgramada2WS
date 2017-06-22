@@ -31,7 +31,6 @@ const HangmanDrawing = React.createClass({
                     const label = Object.keys(level)[0];
                     const strike = level[label];
                     const levelClass = this.getClass(label, strike);
-                    console.log(levelClass);
                     return(
                         <div key = {key} className = {levelClass}></div>
                     )

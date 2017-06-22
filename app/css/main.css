@@ -2050,60 +2050,81 @@
   .hangman-sprites .gamewon {
     background-position: -262px -188px; }
 
-.hangman-keyboard button {
+button.key {
   width: 30px;
   line-height: 23px;
-  background: #abc;
+  background: #02123A;
   border: none;
   border-radius: 4px;
-  color: #345;
-  margin: 1px;
+  color: #FF7600;
+  margin-right: 1px;
+  margin-bottom: 5px;
   text-transform: uppercase;
-  font-weight: bold; }
-  .hangman-keyboard button[disabled] {
-    opacity: 0.5; }
+  font-weight: bold; 
+}
+
+button:hover.key{
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24);
+}
+button[disabled].key {
+  opacity: 0.5 !important;
+  box-shadow: none; 
+}
 
 .letter-container {
   text-align: center;
-  margin-bottom: 20px; }
-  .letter-container .letter-slot {
-    display: inline-block;
-    border-bottom: 2px solid #345;
-    color: #678;
-    width: 30px;
-    height: 30px;
-    margin: 3px;
-    text-transform: uppercase;
-    text-align: center;
-    font-size: 24px;
-    vertical-align: bottom; }
-    .letter-container .letter-slot.revealed {
-      color: #d8dde2; }
-
+  margin-bottom: 20px; 
+}
+.letter-container .letter-slot {
+  display: inline-block;
+  border-bottom: 2px solid #02123A;
+  color: #02123A;
+  width: 30px;
+  height: 30px;
+  margin: 3px;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 24px;
+  vertical-align: bottom; 
+}
+.letter-container .letter-slot.reveal {
+  color: #0636AF; 
+}
 body {
-  background: #e2ebf3;
-  font-family: Cabin; }
-
+  background-image: linear-gradient(#0636AF, #052C8D,  #031C59, #02123A);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: 'Bubbler One', sans-serif; 
+}
 #app {
   width: 416px;
-  background: white;
+  background-image: linear-gradient(#FF7600, #D36200, #853D00);
+  background-repeat: no-repeat;
   padding: 20px;
   border-radius: 4px;
-  margin: 20px auto; }
-  #app h1 {
-    margin: 10px;
-    text-align: center; }
-  #app .new-game {
-    background: #456;
-    font-size: 24px;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    display: block;
-    margin: 20px auto 0;
-    opacity: 0;
-    transition: opacity 1s; }
-    #app .new-game.shown {
-      opacity: 1; }
+  margin: 20px auto; 
+}
+#app h1 {
+  margin: 10px;
+  color: #02123A;
+  text-align: center; 
+}
+#app .new-game {
+  background: #02123A;
+  font-size: 24px;
+  color: #FF7600;
+  border: none;
+  border-radius: 4px;
+  display: block;
+  margin: 20px auto 0;
+  opacity: 0;
+  transition: opacity 1s; 
+}
+#app .new-game.show {
+  opacity: 1; 
+}
+#app .new-game.show:hover{
+  background: #0636AF;
+}
 
 

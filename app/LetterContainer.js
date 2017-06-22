@@ -7,7 +7,7 @@ const LetterContainer = React.createClass({
             <div className = 'letter-container'>
                 {letters.map(function(letter, key){
                     return(
-                        <LetterSlot key = {key} guesses = {this.props.guesses} reveal = {this.props.reveal} />
+                        <LetterSlot key = {key}  reveal = {this.props.reveal} letter = {letter} renderLetter = {this.props.renderLetter}/>
                     )
                 }.bind(this))}
             </div>

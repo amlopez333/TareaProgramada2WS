@@ -47,9 +47,9 @@ header('Access-Control-Allow-Origin: *');
  * @access public
  **/
 class Hangman {
-	private $word = 'true';
+	private $word = 'queue';
 	private $wrongCount = 0;
-	private $rightCount = 4;
+	private $rightCount = 0;
 	private $difficulty = 'easy';
 	
 	/**
@@ -59,6 +59,7 @@ class Hangman {
 	 * @return string
 	 **/
 	public function __construct() {
+		$this->reset();
 	}
 	
 	/**
@@ -68,7 +69,12 @@ class Hangman {
 	 * @return string
 	 **/
 	public function getWord() {
+		$this->reset();
 		return $this->word;
+	}
+	private function reset(){
+		$this->wrongCount = 0;
+		$this->rightCount = strlen($this->word);
 	}
 	
 	/**

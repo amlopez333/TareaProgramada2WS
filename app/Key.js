@@ -8,7 +8,7 @@ const Key = React.createClass({
     render: function(){
         const letter = this.props.letter;
         return(
-            <button value = {letter} onClick = {this.handleClick} disabled = {!this.props.enabled}>{letter}</button>
+            <button className = 'key' value = {letter} onClick = {this.handleClick} disabled = {!this.props.enabled}>{letter}</button>
         )
     }
 });
