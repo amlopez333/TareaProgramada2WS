@@ -51,6 +51,7 @@ class Hangman {
 	private $wrongCount = 0;
 	private $rightCount = 0;
 	private $words = array();
+	private $gameStart;
 	//private $difficulty = 'easy';
 	
 	/**
@@ -82,11 +83,12 @@ class Hangman {
 		}
 		fclose($wordFile);	
 		
-		$this->reset();
+
 		$this->reset();
 		return $this->word;
 	}
 	private function reset(){
+		$this->gameStart = time();
 		$this->word = $this->words[array_rand($this->words,1)];
 		//$this->word = str_replace(" ", '', $this->word);
 		$this->wrongCount = 0;
@@ -131,7 +133,26 @@ class Hangman {
 	public function checkLost(){
 		return $this->wrongCount === 6;
 	}
+
+	public function insertPlayer($playerName){
+		$finish = time() - $this->gameStart;
+		$scores = file_get_contents('scores.txt');
+		$scores = explode("\n", $scores);
+		$i = 0;
+		foreach($scores as $score){
+			if($finish<=(int)explode(",", $score)[0]){
+				//ingresar por splice en i; eliminar ultimo
+			}
+		}
+		
+		$entry = $playerName.','.(string)$finish."\n";
+		file_put_contents('scores.txt', $entry, FILE_APPEND);
+		return true;
+	}
 	
+	/*public function getTopPlayers(){
+		return 'bunga';
+	}*/
 }
 
 ?>

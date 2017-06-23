@@ -2,12 +2,22 @@ import React from 'react';
 import HangmanDrawing from './HangmanDrawing';
 import Keyboard from './Keyboard';
 import LetterContainer from './LetterContainer';
+import NewGameSection from './NewGameSection';
 
 const HangmanGame = React.createClass({
     url: 'http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanServiceDocumentLiteral/',
-    newGame: function(){
-        const pl = new SOAPClientParameters();
+    newGame: function(name){
+        
         //const url = 'http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanServiceDocumentLiteral/';
+        if(name){
+            let params = new SOAPClientParameters();
+            params.add('playerName', name);
+            SOAPClient.invoke(this.url, 'insertPlayer', params, true, function(result){
+                console.log(result);
+            }.bind(this));
+            console.log(name);
+        }
+        const pl = new SOAPClientParameters();
         SOAPClient.invoke(this.url, 'getWord', pl, true, function(result){
             console.log('Palabra: ' + result);
             const word = result;
@@ -81,7 +91,7 @@ const HangmanGame = React.createClass({
         return 'new-game show';
     },
     componentWillMount: function(){
-        this.newGame();
+        this.newGame('');
     },
     render: function(){
         return (
@@ -102,12 +112,10 @@ const HangmanGame = React.createClass({
                 enabled = {!this.state.lost && !this.state.won}
                 />
                 
-                <button 
+                <NewGameSection 
                 className = {this.getClass()}
                 disabled = {!this.state.lost && !this.state.won}
-                onClick = {this.newGame}>
-                New Game
-                </button>
+                onClick = {this.newGame}/>
             </div>
         )
     }

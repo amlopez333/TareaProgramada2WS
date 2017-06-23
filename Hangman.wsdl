@@ -79,6 +79,20 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+     <xsd:element name="insertPlayer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="playerName" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="insertPlayerReturn">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="insertPlayerResult" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
     </xsd:schema>
   </types>
 
@@ -90,6 +104,14 @@
 
   <message name="getWordResponse">
     <part name="parameters" element="tns:getWordReturn" />
+  </message>
+
+<message name="insertPlayerRequest">
+    <part name="parameters" element="tns:insertPlayer" />
+  </message>
+
+  <message name="insertPlayerResponse">
+    <part name="parameters" element="tns:insertPlayerReturn" />
   </message>
 
   <message name="checkGuessRequest">
@@ -141,6 +163,10 @@
       <input message="tns:getWordRequest" />
       <output message="tns:getWordResponse" />
     </operation>
+    <operation name="insertPlayer">
+      <input message="tns:insertPlayerRequest" />
+      <output message="tns:insertPlayerResponse" />
+    </operation>
 
     <operation name="checkGuess">
       <input message="tns:checkGuessRequest" />
@@ -176,6 +202,15 @@
 
     <operation name="getWord">
       <soap:operation soapAction="urn:B43885_Hangman#Hangman#getWord" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="insertPlayer">
+      <soap:operation soapAction="urn:B43885_Hangman#Hangman#insertPlayer" style="document" />
       <input>
         <soap:body use="literal" />
       </input>

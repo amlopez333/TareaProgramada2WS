@@ -2016,7 +2016,9 @@
   content: ""; }
 
 .fa-fonticons:before {
-  content: ""; }
+  content: ""; 
+}
+  
 .hangman-sprites {
   position: relative;
   height: 200px;
@@ -2120,7 +2122,7 @@ body {
   color: #02123A;
   text-align: center; 
 }
-#app .new-game {
+#app .new-game .new-game-button {
   background: #02123A;
   font-size: 24px;
   color: #FF7600;
@@ -2131,10 +2133,21 @@ body {
   opacity: 0;
   transition: opacity 1s; 
 }
-#app .new-game.show {
+#app .new-game .name {
+  background: #FF7600;
+  font-size: 24px;
+  color: #02123A;
+  border: none;
+  border-radius: 4px;
+  display: block;
+  margin: 20px auto 0;
+  opacity: 0;
+  transition: opacity 1s; 
+}
+#app .new-game.show .new-game-button, #app .new-game.show .name {
   opacity: 1; 
 }
-#app .new-game.show:hover{
+#app .new-game.show button.new-game-button:hover{
   background: #0636AF;
 }
 
