@@ -3,6 +3,7 @@ import HangmanDrawing from './HangmanDrawing';
 import Keyboard from './Keyboard';
 import LetterContainer from './LetterContainer';
 import NewGameSection from './NewGameSection';
+import HighScores from './HighScores'
 
 const HangmanGame = React.createClass({
     url: 'http://titanic.ecci.ucr.ac.cr:80/~eb43885/tp2/HangmanServiceDocumentLiteral/',
@@ -15,11 +16,11 @@ const HangmanGame = React.createClass({
             SOAPClient.invoke(this.url, 'insertPlayer', params, true, function(result){
                 console.log(result);
             }.bind(this));
-            console.log(name);
+            //console.log(name);
         }
         const pl = new SOAPClientParameters();
         SOAPClient.invoke(this.url, 'getWord', pl, true, function(result){
-            console.log('Palabra: ' + result);
+            //console.log('Palabra: ' + result);
             const word = result;
             this.setState({word})
         }.bind(this));
@@ -28,14 +29,15 @@ const HangmanGame = React.createClass({
         const lost = false;
         const won = false;
         const renderLetter = {};
-        this.setState({word, strikes, lost, won, renderLetter})
+        const highScores = {none: 'none'}
+        this.setState({word, strikes, lost, won, renderLetter, highScores})
     },
     hasWon: function(){
         var pl = new SOAPClientParameters();
         SOAPClient.invoke(this.url, 'checkWon', pl, true, function(result){
 
             const won = result === 'true';
-            console.log(result);
+            //console.log(result);
             if(won){
                 return this.setState({won});
             }
@@ -74,6 +76,13 @@ const HangmanGame = React.createClass({
             this.setStrikes()
             return this.hasLost();
 	    }.bind(this));
+    },
+    getHighScores: function(){
+        const pl = new SOAPClientParameters();
+        SOAPClient.invoke(this.url, 'getTopPlayers', pl, true, function(result){
+            const highScores = JSON.parse(result);
+            return this.setState({highScores})
+        }.bind(this));
     },
     getTitle: function(){
         if (this.state.won) {
@@ -114,8 +123,11 @@ const HangmanGame = React.createClass({
                 
                 <NewGameSection 
                 className = {this.getClass()}
+                won ={this.state.won}
                 disabled = {!this.state.lost && !this.state.won}
                 onClick = {this.newGame}/>
+
+                <HighScores showHighScores = {this.getHighScores} highScores = {this.state.highScores}/>
             </div>
         )
     }

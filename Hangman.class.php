@@ -52,6 +52,7 @@ class Hangman {
 	private $rightCount = 0;
 	private $words = array();
 	private $gameStart;
+	private $gameEnd;
 	//private $difficulty = 'easy';
 	
 	/**
@@ -127,6 +128,7 @@ class Hangman {
 	}
 	
 	public function checkWon(){
+		$this->gameEnd = time()-$this->gameStart;
 		return $this->rightCount === 0;
 	}
 	
@@ -135,24 +137,45 @@ class Hangman {
 	}
 
 	public function insertPlayer($playerName){
-		$finish = time() - $this->gameStart;
+		$finish = $this->gameEnd;
 		$scores = file_get_contents('scores.txt');
-		$scores = explode("\n", $scores);
+		$scores = explode("\r\n", $scores);
 		$i = 0;
 		foreach($scores as $score){
-			if($finish<=(int)explode(",", $score)[0]){
-				//ingresar por splice en i; eliminar ultimo
-			}
+			if($finish<=(int)explode(",", $score)[1]){
+				$entry = $playerName.','.(string)$finish;
+				array_splice($scores, $i, 0, $entry);
+				$i = 10;
+				//file_put_contents('scores.txt', $entry);
+				break;
+			}//file_put_contents('scores.txt', $score);
+			$i++;	
 		}
-		
-		$entry = $playerName.','.(string)$finish."\n";
-		file_put_contents('scores.txt', $entry, FILE_APPEND);
+		if($i < 10){
+			$entry = $playerName.','.(string)$finish."\r\n";
+			file_put_contents('scores.txt', $entry, FILE_APPEND);
+		}
+		else{
+			$scores = array_slice($scores, 0, 10);
+			$scores = implode("\r\n", $scores);
+			file_put_contents('scores.txt', $scores);
+		}
 		return true;
 	}
 	
-	/*public function getTopPlayers(){
-		return 'bunga';
-	}*/
+	public function getTopPlayers(){
+		$scores = file_get_contents('scores.txt');
+		$scores = explode("\r\n", $scores);
+		$keys = array(0,1,2,3,4,5,6,7,8,9);
+		//$values = array();
+		/*foreach($scores as $score){
+			//$keyValue = explode(",",$score);
+			$keys[] =$keyValue[1];
+			$values[] = $keyValue[0];
+		};*/
+		$scores = array_combine($keys, $scores);
+		return json_encode($scores);
+	}
 }
 
 ?>

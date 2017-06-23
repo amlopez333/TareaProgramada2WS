@@ -93,6 +93,16 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+      <xsd:element name="getTopPlayers">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="getTopPlayersReturn">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="getTopPlayersResult" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
     </xsd:schema>
   </types>
 
@@ -114,6 +124,13 @@
     <part name="parameters" element="tns:insertPlayerReturn" />
   </message>
 
+<message name="getTopPlayersRequest">
+    <part name="parameters" element="tns:getTopPlayers" />
+  </message>
+
+  <message name="getTopPlayersResponse">
+    <part name="parameters" element="tns:getTopPlayersReturn" />
+  </message>
   <message name="checkGuessRequest">
     <part name="parameters" element="tns:checkGuess" />
   </message>
@@ -167,6 +184,10 @@
       <input message="tns:insertPlayerRequest" />
       <output message="tns:insertPlayerResponse" />
     </operation>
+    <operation name="getTopPlayers">
+      <input message="tns:getTopPlayersRequest" />
+      <output message="tns:getTopPlayersResponse" />
+    </operation>
 
     <operation name="checkGuess">
       <input message="tns:checkGuessRequest" />
@@ -209,8 +230,19 @@
         <soap:body use="literal" />
       </output>
     </operation>
+
     <operation name="insertPlayer">
       <soap:operation soapAction="urn:B43885_Hangman#Hangman#insertPlayer" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+
+    <operation name="getTopPlayers">
+      <soap:operation soapAction="urn:B43885_Hangman#Hangman#getTopPlayer" style="document" />
       <input>
         <soap:body use="literal" />
       </input>
